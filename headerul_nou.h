@@ -79,8 +79,11 @@ typedef struct
 
   int varsta,
   greutate,
-  inaltime;
-  short int tip_regim;
+  inaltime,
+  activitate; // de cate ori face sport pe saptamana
+  // 0 = sedentar, 1 = 1-3 ori, 2 = 3-5 ori, 3 = 6-7
+  short int tip_regim; // La fel ca la meniu
+  char sex; // poate fi doar 'M' sau 'F'
 } TPersoana;
 
 float BMI(TPersoana p)
@@ -88,50 +91,71 @@ float BMI(TPersoana p)
   return (float)p.greutate / (p.inaltime * p.inaltime / (100 * 100));
 }
 
+float BMR(TPersoana p)
+{
+  int bmr;
+  bmr = 10 * p.greutate + 6.25 * p.inaltime - 5 * p.varsta;
+  if(p.sex == 'F')
+    bmr -= 161;
+  else if(p.sex == 'M')
+    bmr += 5;
+  switch(p.activitate)
+  {
+    case 0:
+      bmr *= 1.2;
+      break;
+    case 1:
+      bmr *= 1.375;
+      break;
+    case 2:
+      bmr *= 1.55;
+      break;
+    case 3:
+      bmr *= 1.725;
+      break;
+  }
+  return bmr;
+}
 TMeniu* Generare_Meniu(TLista meniuri, TPersoana *persoana, char status[13])
 {
     TMeniu meniul_zilei[3];
     int i;
-    for(; meniuri != NULL; meniuri = meniuri->urm)
-    {
+    for(; meniuri != NULL; meniuri = meniuri->urm);
 
-    }
-    return meniul_zilei;
+    return NULL;
 }
 
 char* afisareStatus(TPersoana p, int *calorii_target)
 {
   float b = BMI(p);
-  char status[13];
+  char status[25];
+  strcpy(status, "");
   printf("STATUS: ");
 
   if(b < 18.5)
   {
-    printf("Subponderal\n");
-    *calorii_target =
     strcpy(status, "Subponderal");
+    //*calorii_target =
   }
   else if(b >= 18.5 && b < 25)
   {
-    printf("Normoponderal\n");
     strcpy(status, "Normoponderal");
   }
   else if(b >= 25 && b < 30)
   {
-    printf("Supraponderal\n");
     strcpy(status, "Supraponderal");
   }
   else if(b >= 30 && b < 40)
   {
-    printf("Obezitate\n");
     strcpy(status, "Obezitate");
   }
   else
   {
-    printf("Obezitate morbida\n");
     strcpy(status, "Obezitate morbida");
   }
-  return status;
+
+  printf("%s\n", status);
+  return 0;
 }
 
 
