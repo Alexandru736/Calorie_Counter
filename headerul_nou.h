@@ -37,7 +37,6 @@ int ins_Inceput_Meniu(ALista aL, TMeniu M)
   TLista aux = AlocCelula(M);
   if(!aux)
     return 0;
-  printf("(53 / H)\n");
   if(!(*aL)) // daca lista este goala
     *aL = aux;
 
@@ -46,7 +45,6 @@ int ins_Inceput_Meniu(ALista aL, TMeniu M)
     aux->urm = *aL;
     *aL = aux;
   }
-  printf("(62 / H)\n");
   return 1;
 }
 
@@ -65,14 +63,17 @@ void printLista(TLista L)
 
 typedef struct
 {
+  char nume[10];
+
   int varsta,
   greutate,
   inaltime;
+  short int tip_regim;
 } TPersoana;
 
 float BMI(TPersoana p)
 {
-  return (float)p.greutate / (p.inaltime * p.inaltime);
+  return (float)p.greutate / (p.inaltime * p.inaltime / (100 * 100));
 }
 
 void afisareStatus(TPersoana p)
@@ -91,4 +92,6 @@ void afisareStatus(TPersoana p)
   else
     printf("Obezitate morbida\n");
 }
+
+
 #endif
