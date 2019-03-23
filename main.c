@@ -7,21 +7,29 @@ int main()
   TLista L = NULL;
   TPersoana pers;
   FILE *f = fopen("input.in", "r");
+  int n = 0;
 
-  fscanf(f, "%s %d %d %d $d", pers.nume, &pers.varsta,
-  &pers.greutate, &pers.inaltime, &pers.tip_regim);
+  fscanf(f, "%s %c %d %d %d %d %d", pers.nume, &pers.sex, &pers.varsta,
+  &pers.greutate, &pers.inaltime, &pers.tip_regim, &pers.activitate);
   fgetc(f);
-  printf("BMI (%s) = %f\n", pers.nume, BMI(pers));
-  afisareStatus(pers);
+  printf("%s:\n|Sex: %c\n|Varsta: %d\n|Greutate(kg): %d\n|Inaltime(cm): %d\n|Activitate saptamanala: %d\n",
+  pers.nume, pers.sex, pers.varsta, pers.greutate, pers.inaltime, pers.activitate);
+  float bmi = BMI(pers), bmr = BMR(pers);
+  printf("\nBMI (%s) = %.3f\n", pers.nume, bmi);
+  afisareStatus(pers, &n);
+  printf("\nBMR (%s) = %.3f\n", pers.nume, bmr);
+
 
   printf("\n");
-  while(fscanf(f, "%s %d %d %hd %hd", p.denumire,
-  &p.calorii, &p.contor, &p.masa, &p.categorie) == 5)
+  while(fscanf(f, "%s %d %hd %hd", p.denumire,
+  &p.calorii, &p.masa, &p.categorie) == 4)
   {
+    p.contor = 0;
     ins_Inceput_Meniu(&L, p);
     fgetc(f);
   }
   printLista(L);
+  printf("\n");
 
   distrugeLista(&L);
   fclose(f);
