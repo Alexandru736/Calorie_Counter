@@ -88,21 +88,50 @@ float BMI(TPersoana p)
   return (float)p.greutate / (p.inaltime * p.inaltime / (100 * 100));
 }
 
-void afisareStatus(TPersoana p)
+TMeniu* Generare_Meniu(TLista meniuri, TPersoana *persoana, char status[13])
+{
+    TMeniu meniul_zilei[3];
+    int i;
+    for(; meniuri != NULL; meniuri = meniuri->urm)
+    {
+
+    }
+    return meniul_zilei;
+}
+
+char* afisareStatus(TPersoana p, int *calorii_target)
 {
   float b = BMI(p);
+  char status[13];
   printf("STATUS: ");
 
   if(b < 18.5)
+  {
     printf("Subponderal\n");
+    *calorii_target =
+    strcpy(status, "Subponderal");
+  }
   else if(b >= 18.5 && b < 25)
+  {
     printf("Normoponderal\n");
+    strcpy(status, "Normoponderal");
+  }
   else if(b >= 25 && b < 30)
+  {
     printf("Supraponderal\n");
+    strcpy(status, "Supraponderal");
+  }
   else if(b >= 30 && b < 40)
+  {
     printf("Obezitate\n");
+    strcpy(status, "Obezitate");
+  }
   else
+  {
     printf("Obezitate morbida\n");
+    strcpy(status, "Obezitate morbida");
+  }
+  return status;
 }
 
 

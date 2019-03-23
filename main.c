@@ -11,8 +11,14 @@ int main()
   fscanf(f, "%s %d %d %d $d", pers.nume, &pers.varsta,
   &pers.greutate, &pers.inaltime, &pers.tip_regim);
   fgetc(f);
+  float bmi_rezultat = BMI(pers);
   printf("BMI (%s) = %f\n", pers.nume, BMI(pers));
-  afisareStatus(pers);
+  char status[13];
+  /*
+
+
+  */
+  status = afisareStatus(pers);
 
   printf("\n");
   while(fscanf(f, "%s %d %d %hd %hd", p.denumire,
@@ -22,6 +28,8 @@ int main()
     fgetc(f);
   }
   printLista(L);
+
+  Generare_Meniu(L, pers, status);
 
   distrugeLista(&L);
   fclose(f);
