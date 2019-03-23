@@ -23,7 +23,7 @@ int main()
   }
   printLista(L);
 
-
+  distrugeLista(&L);
   fclose(f);
 
   return 0;

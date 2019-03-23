@@ -59,6 +59,18 @@ void printLista(TLista L)
   }
 }
 
+void distrugeLista(ALista aL)
+{
+  printf("Accesam distrugerea.\n");
+  TLista aux;
+  while(*aL)
+  {
+    aux = *aL;
+    *aL = aux->urm;
+    free(aux);
+  }
+  printf("Lista e goala.\n");
+}
 // ------------------- PERSOANA ---------------------
 
 typedef struct
