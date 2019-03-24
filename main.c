@@ -1,4 +1,4 @@
-#include "headerul_nou.h"
+#include "header.h"
 
 int main()
 {
@@ -66,8 +66,6 @@ int main()
     nr_elem_lista++;
     fgetc(f);
   }
-  printLista(L);
-  printf("\n");
 
   Generare_Meniu(L, pers, bmr, nr_elem_lista);
 
