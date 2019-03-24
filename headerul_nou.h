@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
+#include <time.h>
 
 #ifndef HEADER
 #define HEADER
@@ -61,7 +63,6 @@ void printLista(TLista L)
 
 void distrugeLista(ALista aL)
 {
-  printf("Accesam distrugerea.\n");
   TLista aux;
   while(*aL)
   {
@@ -69,7 +70,6 @@ void distrugeLista(ALista aL)
     *aL = aux->urm;
     free(aux);
   }
-  printf("Lista e goala.\n");
 }
 // ------------------- PERSOANA ---------------------
 
@@ -88,8 +88,10 @@ typedef struct
 
 float BMI(TPersoana p)
 {
-  return (float)p.greutate / (p.inaltime * p.inaltime / (100 * 100));
+  printf("printare in functie: %d, %d\n", p.greutate, p.inaltime);
+  return (float)p.greutate * 10000 / (p.inaltime * p.inaltime);
 }
+
 
 float BMR(TPersoana p)
 {
@@ -116,13 +118,236 @@ float BMR(TPersoana p)
   }
   return bmr;
 }
-TMeniu* Generare_Meniu(TLista meniuri, TPersoana *persoana, char status[13])
-{
-    TMeniu meniul_zilei[3];
-    int i;
-    for(; meniuri != NULL; meniuri = meniuri->urm);
 
-    return NULL;
+void Generare_Meniu(TLista L, TPersoana pers, float bmr, int nr_elem_lista)
+{
+  int i, j, min;
+  float calor;
+  TLista m;
+  int pozitii[nr_elem_lista];
+  int poz = 0;
+  time_t t;
+  srand((unsigned) time(&t));
+
+  for(i = 0; i < nr_elem_lista; i++)
+    pozitii[i] = 0;
+
+  switch(pers.tip_regim)
+  {
+    case 4:
+      printf("Regim vegan\n");
+      break;
+    case 2:
+      printf("Regim vegetarian\n");
+      break;
+    case 1:
+      printf("Regim normal\n");
+      break;
+  }
+  for (i = 0; i < 7; i++)
+  {
+    printf("----------- Ziua %d -------------\n", i+1);
+    poz = 0;
+    min = 10000;
+
+    if(pers.tip_regim == 4) // vegan
+    {
+      calor = 0;
+      for(m = L; m; m = m->urm, poz++)
+      {
+      // MIC DEJUN
+        if((((m->info).masa) & 1) && (!pozitii[poz])
+        && (((m->info).categorie >> 2) & 1))
+        {
+          calor += (m->info).calorii;
+          pozitii[poz] +=  rand() % 3 + 3;
+
+          printf("Mic dejun: %s ---- %d\n", (m->info).denumire, calor);
+          m = m->urm;
+          poz++;
+          break;
+        }
+      }
+      for( ; m; m = m->urm, poz++)
+      {
+      // CINA
+        if((((m->info).masa >> 2) & 1) && (!pozitii[poz])
+        && (((m->info).categorie >> 2) & 1))
+        {
+          calor += (m->info).calorii;
+          pozitii[poz] +=  rand() % 3 + 3;
+
+          printf("Cina: %s ---- %d\n", (m->info).denumire, calor);
+          m = m->urm;
+          poz++;
+          break;
+        }
+      }
+      for( ; m; m = m->urm, poz++)
+      {
+      // PRANZ
+        if((((m->info).masa >> 1) & 1) && (!pozitii[poz])
+        && (((m->info).categorie >> 2) & 1))
+          if(abs(bmr - (m->info).calorii) < min)
+            {
+              min = (m->info).calorii;
+              if(m->urm)
+              {
+                if(abs(bmr - (m->urm->info).calorii) > min)
+                {
+                  calor += (m->info).calorii;
+                  pozitii[poz] +=  rand() % 3 + 3;
+
+                  printf("Pranz: %s ---- %d\n", (m->info).denumire, calor);
+                  break;
+                }
+              }
+              else
+              {
+                calor += (m->info).calorii;
+                pozitii[poz] +=  rand() % 3 + 3;
+
+                printf("Pranz: %s ---- %d\n", (m->info).denumire, calor);
+              }
+            }
+        }
+
+      printf("Total kcal: %d\n", calor);
+      }
+    else if(pers.tip_regim == 2) // vegetarian
+    {
+      calor = 0;
+      for(m = L; m; m = m->urm, poz++)
+      {
+      // MIC DEJUN
+        if((((m->info).masa) & 1) && (!pozitii[poz])
+        && (((m->info).categorie >> 1) & 1))
+        {
+          calor += (m->info).calorii;
+          pozitii[poz] +=  rand() % 3 + 3;
+
+          printf("Mic dejun: %s ---- %d\n", (m->info).denumire, calor);
+          m = m->urm;
+          break;
+        }
+      }
+      for( ; m; m = m->urm, poz++)
+      {
+      // CINA
+        if((((m->info).masa >> 2) & 1) && (!pozitii[poz])
+        && (((m->info).categorie >> 1) & 1))
+        {
+          calor += (m->info).calorii;
+          pozitii[poz] +=  rand() % 3 + 3;
+
+          printf("Cina: %s ---- %d\n", (m->info).denumire, calor);
+          m = m->urm;
+          poz++;
+          break;
+        }
+      }
+      for( ; m; m = m->urm, poz++)
+      {
+      // PRANZ
+        if((((m->info).masa >> 1) & 1) && (!pozitii[poz])
+        && (((m->info).categorie >> 1) & 1))
+          if(abs(bmr - (m->info).calorii) < min)
+            {
+              min = (m->info).calorii;
+              if(m->urm)
+              {
+                if(abs(bmr - (m->urm->info).calorii) > min)
+                {
+                  calor += (m->info).calorii;
+                  pozitii[poz] +=  rand() % 3 + 3;
+
+                  printf("Pranz: %s ---- %d\n", (m->info).denumire, calor);
+                  break;
+                }
+              }
+              else
+              {
+                calor += (m->info).calorii;
+                pozitii[poz] +=  rand() % 3 + 3;
+
+                printf("Pranz: %s ---- %d\n", (m->info).denumire, calor);
+              }
+            }
+        }
+
+      printf("Total kcal: %d\n", calor);
+      }
+    else if(pers.tip_regim == 1) // oarecare
+    {
+      calor = 0;
+      for(m = L; m; m = m->urm, poz++)
+      {
+      // MIC DEJUN
+        if((((m->info).masa) & 1) && (!pozitii[poz])
+        && ((m->info).categorie & 1))
+        {
+          calor += (m->info).calorii;
+          pozitii[poz] +=  rand() % 3 + 3;
+
+          printf("Mic dejun: %s ---- %d\n", (m->info).denumire, calor);
+          m = m->urm;
+          poz++;
+          break;
+        }
+      }
+      for( ; m; m = m->urm, poz++)
+      {
+      // CINA
+        if((((m->info).masa >> 2) & 1) && (!pozitii[poz])
+        && ((m->info).categorie & 1))
+        {
+          calor += (m->info).calorii;
+          pozitii[poz] +=  rand() % 3 + 3;
+
+          printf("Cina: %s ---- %d\n", (m->info).denumire, calor);
+          m = m->urm;
+          poz++;
+          break;
+        }
+      }
+      for( ; m; m = m->urm, poz++)
+      {
+      // PRANZ
+        if((((m->info).masa >> 1) & 1) && (!pozitii[poz])
+        && ((m->info).categorie & 1))
+          if(abs(bmr - (m->info).calorii) < min)
+            {
+              min = (m->info).calorii;
+              printf("%d\n", min);
+              if(m->urm)
+              {
+                if(abs(bmr - (m->urm->info).calorii) > min)
+                {
+                  calor += (m->info).calorii;
+                  pozitii[poz] +=  rand() % 3 + 3;
+
+                  printf("Pranz: %s ---- %d\n", (m->info).denumire, calor);
+                  break;
+                }
+              }
+              else
+              {
+                calor += (m->info).calorii;
+                pozitii[poz] +=  rand() % 3 + 3;
+
+                printf("Pranz: %s ---- %d\n", (m->info).denumire, calor);
+              }
+            }
+        }
+
+      printf("Total kcal: %d\n", calor);
+    }
+
+    for(m = L, poz = 0; m; m = m->urm, poz++)
+      if(pozitii[poz])
+        pozitii[poz]--;
+    printf("\n");
+  }
 }
 
 char* afisareStatus(TPersoana p, int *calorii_target)
