@@ -5,4 +5,4 @@
 
 ### Detalii tehnice ###
 
-  Programul utilizeaza tehnologia de tip C. Ea are la baza o lista simplu inlantuita care retine detaliile meniurilor si doi algoritmi: unul care calculeaza cantitatea optima de consumare a caloriilor pe zi pentru ca mai apoi, in baza acestui rezultat sa se genereze pe zile meniurile pentru micul dejun, pranz si seara. Astfel, userul va putea accesa insformatia de care nevoie in scopul dietei si se va putea delecta de meniuri diverse si sanatoase. 
+  Programul utilizeaza tehnologia de tip C. Ea are la baza o lista simplu inlantuita care retine detaliile meniurilor si doi algoritmi: unul care calculeaza cantitatea optima de consumare a caloriilor pe zi pentru ca mai apoi, in baza acestui rezultat sa se genereze pe zile meniurile pentru micul dejun, pranz si cina. Astfel, userul va putea accesa informatia de care nevoie in scopul dietei si se va putea delecta de meniuri diverse si sanatoase. 
