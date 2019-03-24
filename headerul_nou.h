@@ -88,10 +88,8 @@ typedef struct
 
 float BMI(TPersoana p)
 {
-  printf("printare in functie: %d, %d\n", p.greutate, p.inaltime);
   return (float)p.greutate * 10000 / (p.inaltime * p.inaltime);
 }
-
 
 float BMR(TPersoana p)
 {
@@ -121,9 +119,10 @@ float BMR(TPersoana p)
 
 void Generare_Meniu(TLista L, TPersoana pers, float bmr, int nr_elem_lista)
 {
-  int i, j, min;
-  float calor;
+  int i, j, min, ok;
+  int calor;
   TLista m;
+  TMeniu p;
   int pozitii[nr_elem_lista];
   int poz = 0;
   time_t t;
@@ -153,65 +152,53 @@ void Generare_Meniu(TLista L, TPersoana pers, float bmr, int nr_elem_lista)
     if(pers.tip_regim == 4) // vegan
     {
       calor = 0;
-      for(m = L; m; m = m->urm, poz++)
+      for(m = L; m; m = m->urm, poz++) // MIC DEJUN
       {
-      // MIC DEJUN
         if((((m->info).masa) & 1) && (!pozitii[poz])
         && (((m->info).categorie >> 2) & 1))
         {
           calor += (m->info).calorii;
           pozitii[poz] +=  rand() % 3 + 3;
 
-          printf("Mic dejun: %s ---- %d\n", (m->info).denumire, calor);
+          printf("Mic dejun: %s ---- %d kcal\n", (m->info).denumire, (m->info).calorii);
           m = m->urm;
           poz++;
           break;
         }
       }
-      for( ; m; m = m->urm, poz++)
+      for( ; m; m = m->urm, poz++) // CINA
       {
-      // CINA
+
         if((((m->info).masa >> 2) & 1) && (!pozitii[poz])
         && (((m->info).categorie >> 2) & 1))
         {
           calor += (m->info).calorii;
           pozitii[poz] +=  rand() % 3 + 3;
 
-          printf("Cina: %s ---- %d\n", (m->info).denumire, calor);
+          printf("Cina: %s ---- %d kcal\n", (m->info).denumire, (m->info).calorii);
           m = m->urm;
           poz++;
           break;
         }
       }
-      for( ; m; m = m->urm, poz++)
+      for( ; m; m = m->urm, poz++) // PRANZ
       {
-      // PRANZ
         if((((m->info).masa >> 1) & 1) && (!pozitii[poz])
-        && (((m->info).categorie >> 2) & 1))
+        && ((m->info).categorie & 1))
+        {
           if(abs(bmr - (m->info).calorii) < min)
-            {
-              min = (m->info).calorii;
-              if(m->urm)
-              {
-                if(abs(bmr - (m->urm->info).calorii) > min)
-                {
-                  calor += (m->info).calorii;
-                  pozitii[poz] +=  rand() % 3 + 3;
+          {
+            min = abs(bmr - (m->info).calorii);
+            ok = poz;
+            p = m->info;
+          }
+          calor += p.calorii;
+          pozitii[ok] +=  rand() % 3 + 3;
 
-                  printf("Pranz: %s ---- %d\n", (m->info).denumire, calor);
-                  break;
-                }
-              }
-              else
-              {
-                calor += (m->info).calorii;
-                pozitii[poz] +=  rand() % 3 + 3;
-
-                printf("Pranz: %s ---- %d\n", (m->info).denumire, calor);
-              }
-            }
+          printf("Pranz: %s ---- %d kcal\n", p.denumire, p.calorii);
+          break;
         }
-
+      }
       printf("Total kcal: %d\n", calor);
       }
     else if(pers.tip_regim == 2) // vegetarian
@@ -226,7 +213,7 @@ void Generare_Meniu(TLista L, TPersoana pers, float bmr, int nr_elem_lista)
           calor += (m->info).calorii;
           pozitii[poz] +=  rand() % 3 + 3;
 
-          printf("Mic dejun: %s ---- %d\n", (m->info).denumire, calor);
+          printf("Mic dejun: %s ---- %d kcal\n", (m->info).denumire, (m->info).calorii);
           m = m->urm;
           break;
         }
@@ -240,40 +227,30 @@ void Generare_Meniu(TLista L, TPersoana pers, float bmr, int nr_elem_lista)
           calor += (m->info).calorii;
           pozitii[poz] +=  rand() % 3 + 3;
 
-          printf("Cina: %s ---- %d\n", (m->info).denumire, calor);
+          printf("Cina: %s ---- %d kcal\n", (m->info).denumire, (m->info).calorii);
           m = m->urm;
           poz++;
           break;
         }
       }
-      for( ; m; m = m->urm, poz++)
+      for( ; m; m = m->urm, poz++) // PRANZ
       {
-      // PRANZ
         if((((m->info).masa >> 1) & 1) && (!pozitii[poz])
         && (((m->info).categorie >> 1) & 1))
+        {
           if(abs(bmr - (m->info).calorii) < min)
-            {
-              min = (m->info).calorii;
-              if(m->urm)
-              {
-                if(abs(bmr - (m->urm->info).calorii) > min)
-                {
-                  calor += (m->info).calorii;
-                  pozitii[poz] +=  rand() % 3 + 3;
+          {
+            min = abs(bmr - (m->info).calorii);
+            ok = poz;
+            p = m->info;
+          }
+          calor += p.calorii;
+          pozitii[ok] +=  rand() % 3 + 3;
 
-                  printf("Pranz: %s ---- %d\n", (m->info).denumire, calor);
-                  break;
-                }
-              }
-              else
-              {
-                calor += (m->info).calorii;
-                pozitii[poz] +=  rand() % 3 + 3;
-
-                printf("Pranz: %s ---- %d\n", (m->info).denumire, calor);
-              }
-            }
+          printf("Pranz: %s ---- %d kcal\n", p.denumire, p.calorii);
+          break;
         }
+      }
 
       printf("Total kcal: %d\n", calor);
       }
@@ -286,59 +263,49 @@ void Generare_Meniu(TLista L, TPersoana pers, float bmr, int nr_elem_lista)
         if((((m->info).masa) & 1) && (!pozitii[poz])
         && ((m->info).categorie & 1))
         {
+
           calor += (m->info).calorii;
           pozitii[poz] +=  rand() % 3 + 3;
 
-          printf("Mic dejun: %s ---- %d\n", (m->info).denumire, calor);
+          printf("Mic dejun: %s ---- %d kcal\n", (m->info).denumire, (m->info).calorii);
           m = m->urm;
           poz++;
           break;
         }
       }
-      for( ; m; m = m->urm, poz++)
+      for( ; m; m = m->urm, poz++) // CINA
       {
-      // CINA
+
         if((((m->info).masa >> 2) & 1) && (!pozitii[poz])
         && ((m->info).categorie & 1))
         {
           calor += (m->info).calorii;
           pozitii[poz] +=  rand() % 3 + 3;
 
-          printf("Cina: %s ---- %d\n", (m->info).denumire, calor);
+          printf("Cina: %s ---- %d kcal\n", (m->info).denumire, (m->info).calorii);
           m = m->urm;
           poz++;
           break;
         }
       }
-      for( ; m; m = m->urm, poz++)
+      for( ; m; m = m->urm, poz++) // PRANZ
       {
-      // PRANZ
         if((((m->info).masa >> 1) & 1) && (!pozitii[poz])
         && ((m->info).categorie & 1))
+        {
           if(abs(bmr - (m->info).calorii) < min)
-            {
-              min = (m->info).calorii;
-              printf("%d\n", min);
-              if(m->urm)
-              {
-                if(abs(bmr - (m->urm->info).calorii) > min)
-                {
-                  calor += (m->info).calorii;
-                  pozitii[poz] +=  rand() % 3 + 3;
+          {
+            min = abs(bmr - (m->info).calorii);
+            ok = poz;
+            p = m->info;
+          }
+          calor += p.calorii;
+          pozitii[ok] +=  rand() % 3 + 3;
 
-                  printf("Pranz: %s ---- %d\n", (m->info).denumire, calor);
-                  break;
-                }
-              }
-              else
-              {
-                calor += (m->info).calorii;
-                pozitii[poz] +=  rand() % 3 + 3;
-
-                printf("Pranz: %s ---- %d\n", (m->info).denumire, calor);
-              }
-            }
+          printf("Pranz: %s ---- %d kcal\n", p.denumire, p.calorii);
+          break;
         }
+      }
 
       printf("Total kcal: %d\n", calor);
     }

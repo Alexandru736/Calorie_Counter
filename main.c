@@ -14,8 +14,13 @@ int main()
   fscanf(f, "%s %c %d %d %d %hd %d", pers.nume, &pers.sex, &pers.varsta,
   &pers.greutate, &pers.inaltime, &pers.tip_regim, &pers.activitate);
   fgetc(f);
-  printf("%s:\n|Sex: %c\n|Varsta: %d\n|Greutate(kg): %d\n|Inaltime(cm): %d\n|Activitate saptamanala: %d\n",
-  pers.nume, pers.sex, pers.varsta, pers.greutate, pers.inaltime, pers.activitate);
+  printf("Nume: %s\n", pers.nume);
+  printf("Sex: %c\n", pers.sex);
+  printf("Varsta: %d\n", pers.varsta);
+  printf("Greutate(kg): %d\n", pers.greutate);
+  printf("Inaltime(cm): %d\n", pers.inaltime);
+  printf("Activitate saptamanala (0 - sedentar, 1 - 1-3 ori, 2 - 3-5 ori, 3 - 6-7 ori): %d\n",
+  pers.activitate);
   float bmi = BMI(pers), bmr = BMR(pers);
   printf("\nBMI (%s) = %.3f\n", pers.nume, bmi);
   afisareStatus(pers, &n);
@@ -51,7 +56,7 @@ int main()
         break;
     }
   }
-  printf("\nNr. calorii / zi: %.3f\n", bmr);
+  printf("\nTarget ----> Nr. calorii / zi: %.3f\n", bmr);
   printf("\n");
   while(fscanf(f, "%s %d %hd %hd", p.denumire,
   &p.calorii, &p.masa, &p.categorie) == 4)
